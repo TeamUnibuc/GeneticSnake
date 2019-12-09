@@ -5,7 +5,6 @@ import subscripts.main_script
 
 subscripts.main_script.main_script()
 
-#Emma e penala
 
 M = 20000
 
