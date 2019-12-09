@@ -1,20 +1,8 @@
 import torch as th
 import torch.nn as nn
 import matplotlib.pyplot as plt
+N = 100
 
-def GetRandomSnake():
-    return None
-
-def Evolve(snake : torch.nn.modules.container.Sequential, GENERATION : int):
-    return [None]
-
-
-
-
-
-
-
-### OLD
 model = nn.Sequential(
     nn.Linear(N, 1)
 ).cuda()

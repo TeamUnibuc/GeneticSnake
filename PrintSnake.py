@@ -49,6 +49,7 @@ ani = animation.ArtistAnimation(fig, ims, repeat=True)
 
 plt.show()
 
+
 # To save the animation, use e.g.
 #
 # ani.save("movie.mp4")
