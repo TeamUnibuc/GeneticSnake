@@ -34,6 +34,7 @@ def show_path(N, M):
         snake.append((a, b))
         time.sleep(0.1)
 
+"""
 #plt.ion()
 fig = plt.figure()
 
@@ -61,3 +62,4 @@ plt.show()
 # ani.save("movie.mp4", writer=writer)
 
 
+"""

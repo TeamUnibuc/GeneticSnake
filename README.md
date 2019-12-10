@@ -11,10 +11,6 @@ Snake AI
     6. distance to wall/tail right
     7. distance to wall/tail up
     8. distance to wall/tail left
-    9. distance to food down
-    10. distance to food right
-    11. distance to food up
-    12. distance to food left
 
 # Output:
     1. probability of going down
@@ -36,17 +32,11 @@ Snake AI
     After each generation, the best SURVIVAL snakes evolve in N / SURVIVAL new snakes.
 
 # Fitness:
-    COEF_FOOD = 0.3
-    COEF_TIME = 0.5
-    COEF_FREE = 0.2
 
     FOOD_FITNESS = food eaten
     TIME_FITNESS = time alive
-    FREE_FITNESS = # of cells he can dfs into
     
-    TOTAL_FITNESS = COEF_FOOD * FOOD_FITNESS +
-                    COEF_TIME * TIME_FITNESS +
-                    COEF_FREE * FREE_FITNESS
+    TOTAL_FITNESS = FOOD_FITNESS + TIME_FITNESS
 
 # Evolution:
     Each individual evolves into N / SURVIVAL new individuals.
