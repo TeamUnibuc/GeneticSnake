@@ -5,8 +5,8 @@ Snake AI
 # Input:
     1. position X of head
     2. position Y of head
-    3. position X of food
-    4. position Y of food
+    3. position DX of food from head
+    4. position DY of food from head
     5. distance to wall/tail down
     6. distance to wall/tail right
     7. distance to wall/tail up
@@ -35,8 +35,9 @@ Snake AI
 
     FOOD_FITNESS = food eaten
     TIME_FITNESS = time alive
-    
-    TOTAL_FITNESS = FOOD_FITNESS + TIME_FITNESS
+    CLOSE_FITNESS = average of # of steps towards food
+
+    TOTAL_FITNESS = FOOD_FITNESS + TIME_FITNESS + CLOSE_FITNESS
 
 # Evolution:
     Each individual evolves into N / SURVIVAL new individuals.

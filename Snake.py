@@ -94,8 +94,13 @@ class SnakeSimulation:
         self.eaten = 0
 
         alive_time = 0
+        avg = 0.
+
         while alive_time < time and self.lost == 0:
             alive_time += 1
+            dinit = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
             self.NewPoz()
-
-        self.Fitness = alive_time / 200 + self.eaten
+            dfinal = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
+            avg += (dfinal < dinit)
+        
+        self.Fitness = alive_time / 200 + self.eaten + avg / alive_time
