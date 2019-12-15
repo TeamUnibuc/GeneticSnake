@@ -6,9 +6,8 @@ IN_FEATURES     = 6
 OUT_FEATURES    = 4
 
 N               = 100
-SURVIVAL        = 50
+SURVIVAL        = 20
 DIM             = 10
-KIDS            = N / SURVIVAL
 
 def T(GEN : int):
     return 100 * (1 + GEN / 100)

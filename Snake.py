@@ -25,14 +25,23 @@ class SnakeAI:
         return v.index(max(v))
 
     def Evolve(self, coef : float):
-        oth = copy.deepcopy(self)
-        for i in oth.layers:
+        for i in self.layers:
             for j in i:
-                for k in j:
-                    if random.randint(1, 4) == 1:
-                        k += random.uniform(coef, -coef)
-        return oth
+                j += th.randn(j.shape) * coef
 
+def Evolve(a : SnakeAI, b : SnakeAI):
+    if random.randint(1, 2) == 1:
+        a, b = b, a
+
+    c = copy.deepcopy(a)
+    for q in range(len(c.layers)):
+        n = random.randint(0, c.layers[q].shape[0])
+        m = random.randint(0, c.layers[q].shape[1])
+        for i in range(c.layers[q].shape[0]):
+            for j in range(c.layers[q].shape[1]):
+                if i > n or (i == n and j > m):
+                    c.layers[q][i][j] = b.layers[q][i][j]
+    return c
 
 class SnakeSimulation:
     def RandomPoz(self):
@@ -103,4 +112,4 @@ class SnakeSimulation:
             dfinal = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
             avg += (dfinal < dinit)
         
-        self.Fitness = alive_time / 200 + self.eaten + avg / alive_time
+        self.Fitness = self.eaten + avg / alive_time
