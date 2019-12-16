@@ -1,12 +1,15 @@
 # ML
 Snake AI
 
+An AI based on a genetic evolutionary algorithm, that learns how to play snake on a 10x10 matrix.
+For visualizing the AI, the best snake overall (number of eaten snaks) is captured in an mp4 file called "Fig.mp4"
+
 # Arhitecture:
 # Input:
-    1. position X of head
-    2. position Y of head
-    3. position DX of food from head
-    4. position DY of food from head
+    1. Xfood - Xhead
+    2. Xhead - Xfood
+    3. Yfood - Yhead
+    4. Yhead - Yfood
     5. distance to wall/tail down
     6. distance to wall/tail right
     7. distance to wall/tail up
@@ -22,27 +25,17 @@ Snake AI
     Making the snake making one step towards the dominant decision from Output
 
 # Processing:
-    N           = 1000
-    SURVIVAL    = 100
-    T           = 100 * (1 + GEN / 100)
-    DIM         = 10 
-    
-    Each generation has N individuals, playing on a DIM x DIM matrix, and having at most T time stamps to make the biggest fitness.
+    The exact value for the constants is given in the file 'GlobalConstants.py'.
+
+    Each generation has N individuals, playing on a DIM x DIM matrix, and having at most T time stamps without eating to make the biggest fitness.
 
     After each generation, the best SURVIVAL snakes evolve in N / SURVIVAL new snakes.
 
 # Fitness:
-
-    FOOD_FITNESS = food eaten
-    TIME_FITNESS = time alive
-    CLOSE_FITNESS = average of # of steps towards food
-
-    TOTAL_FITNESS = FOOD_FITNESS + TIME_FITNESS + CLOSE_FITNESS
+    The fitness of a snake is the number of times it ate.
 
 # Evolution:
     Each individual evolves into N / SURVIVAL new individuals.
-    The evolution process from snake S is:
-
-    G = generation
-    NR = N / SURVIVAL
-    S_i = S + (RandomWeights * (i / NR) * 10^(-ln(G) - 1))
+    The evolution process is the following:
+    1. Each snake breakes down into 2 copies: one identical and one with some minor mutations.
+    2. Pairs of snakes cross-bread: one new snake is made with a part of the ADN of the first snake and a part of the second one, WITHOUT mutations.
