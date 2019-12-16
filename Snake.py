@@ -9,17 +9,16 @@ class SnakeAI:
 
     def __init__(self):
         lvl1 = GlobalConstants.IN_FEATURES
-        lvl2 = 14
+        lvl2 = 20
         lvl3 = GlobalConstants.OUT_FEATURES
 
         self.layers = [th.randn(lvl1, lvl2), th.randn(lvl2, lvl3)]
 
     def Act(self, v):
         v = th.tensor(v, dtype=th.float).reshape((1, -1))
-        
-        for i in self.layers:
-            v = v.mm(i)
-            #v = th.tanh(v)
+        v = v.mm(self.layers[0])
+        v = th.sigmoid(v)
+        v = v.mm(self.layers[1])
         
         v = v.reshape((-1)).tolist()
 

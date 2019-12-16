@@ -20,8 +20,8 @@ def main():
         for sn in snakes:
             s = Snake.SnakeSimulation(sn, time_max)
             fit = s.Fitness
-            if random.randint(1, 100) == 1:
-                print("Made ", s.alive_time, " moves, of which ", s.avg, " where towards the food, and ate ", s.eaten, " times")
+            #if random.randint(1, 100) == 1:
+            #    print("Made ", s.alive_time, " moves, of which ", s.avg, " where towards the food, and ate ", s.eaten, " times")
             
             if s.eaten > last:
                 last = s.eaten

@@ -6,5 +6,5 @@ IN_FEATURES     = 8
 OUT_FEATURES    = 4
 
 N               = 200
-SURVIVAL        = 10
+SURVIVAL        = 20
 DIM             = 10
