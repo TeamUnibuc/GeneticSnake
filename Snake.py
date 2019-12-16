@@ -9,39 +9,40 @@ class SnakeAI:
 
     def __init__(self):
         lvl1 = GlobalConstants.IN_FEATURES
-        lvl2 = 10
+        lvl2 = 14
         lvl3 = GlobalConstants.OUT_FEATURES
 
         self.layers = [th.randn(lvl1, lvl2), th.randn(lvl2, lvl3)]
 
     def Act(self, v):
-        v = th.tensor(v, dtype=th.float).reshape((1, -1)).cuda()
+        v = th.tensor(v, dtype=th.float).reshape((1, -1))
         
         for i in self.layers:
             v = v.mm(i)
-            #v = th.max(th.tensor([0.]), v)
+            #v = th.tanh(v)
         
         v = v.reshape((-1)).tolist()
 
         return v.index(max(v))
 
-    def Evolve(self, coef : float):
+    def Evolve(self):
         for i in self.layers:
             for j in i:
-                j += th.randn(j.shape) * coef
+                if random.randint(0, 20) == 0:
+                    j += th.randn(j.shape)
 
 def Evolve(a : SnakeAI, b : SnakeAI):
     if random.randint(1, 2) == 1:
         a, b = b, a
 
     c = copy.deepcopy(a)
-    for q in range(len(c.layers)):
-        n = random.randint(0, c.layers[q].shape[0])
-        m = random.randint(0, c.layers[q].shape[1])
-        for i in range(c.layers[q].shape[0]):
-            for j in range(c.layers[q].shape[1]):
-                if i > n or (i == n and j > m):
-                    c.layers[q][i][j] = b.layers[q][i][j]
+    q = random.randint(0, len(c.layers) - 1)
+    n = random.randint(0, c.layers[q].shape[0])
+    m = random.randint(0, c.layers[q].shape[1])
+    for i in range(c.layers[q].shape[0]):
+        for j in range(c.layers[q].shape[1]):
+            if i > n or (i == n and j > m):
+                c.layers[q][i][j] = copy.deepcopy(b.layers[q][i][j])
     return c
 
 class SnakeSimulation:
@@ -66,7 +67,8 @@ class SnakeSimulation:
     def See(self):
         x, y = self.pozition[-1]
         v = []
-        v += [x - self.Food[0], y - self.Food[1]] # position of food
+        v += [x - self.Food[0], self.Food[0] - x]
+        v += [y - self.Food[1], self.Food[1] - y] # position of food
         v += [self.distance(x, y, 1, 0)]
         v += [self.distance(x, y, 0, 1)]
         v += [self.distance(x, y, -1, 0)]
@@ -89,7 +91,7 @@ class SnakeSimulation:
 
         if direction[0] == self.Food[0] and direction[1] == self.Food[1]:
             self.eaten += 1
-            #self.Food = self.RandomPoz()
+            self.Food = self.RandomPoz()
         else:
             self.matrix[self.pozition[0][0]][self.pozition[0][1]] = 0
             self.pozition = self.pozition[1:]
@@ -97,24 +99,37 @@ class SnakeSimulation:
     def __init__(self, snakeai : SnakeAI, time : int):
         self.snakeai = snakeai
         self.DIM = GlobalConstants.DIM
-        self.pozition = [[self.DIM // 2, self.DIM // 2]]
+        self.pozition = [[1, 1]]
         self.matrix = [[0 for i in range(self.DIM)] for j in range(self.DIM)]
         self.matrix[self.pozition[0][0]][self.pozition[0][1]] = 1
-        self.Food = self.RandomPoz()
+        self.Food = (5, 5)
         self.lost = 0
         self.eaten = 0
+        self.vizual = [[copy.deepcopy(self.pozition), self.Food]]
 
         alive_time = 0
         avg = 0.
+        passed = 0
 
-        while alive_time < time and self.lost == 0:
+        while self.lost == 0 and len(self.pozition) <= 60:
+            frm_food = self.eaten
             alive_time += 1
             f = self.Food
-            dinit = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
+            dinit = abs(self.pozition[-1][0] - f[0]) + abs(self.pozition[-1][1] - f[1])
             self.NewPoz()
-            dfinal = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
-            avg += int(dfinal < dinit)
+            dfinal = abs(self.pozition[-1][0] - f[0]) + abs(self.pozition[-1][1] - f[1])
+            if dinit > dfinal:
+                avg += 1
+
+            if frm_food == self.eaten:
+                passed += 1
+            else:
+                passed = 0
+            if passed >= 100:
+                self.lost = 1
+            if not self.lost:
+                self.vizual.append([copy.deepcopy(self.pozition), copy.deepcopy(self.Food)])
         
         self.alive_time = alive_time
         self.avg = avg
-        self.Fitness = self.alive_time + self.eaten + avg / alive_time
+        self.Fitness = self.eaten
