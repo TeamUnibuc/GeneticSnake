@@ -9,16 +9,17 @@ class SnakeAI:
 
     def __init__(self):
         lvl1 = GlobalConstants.IN_FEATURES
-        lvl2 = 1
+        lvl2 = 10
         lvl3 = GlobalConstants.OUT_FEATURES
 
-        self.layers = [th.randn(lvl1, lvl3)]
+        self.layers = [th.randn(lvl1, lvl2), th.randn(lvl2, lvl3)]
 
     def Act(self, v):
         v = th.tensor(v, dtype=th.float).reshape((1, -1))
         
         for i in self.layers:
             v = v.mm(i)
+            #v = th.max(th.tensor([0.]), v)
         
         v = v.reshape((-1)).tolist()
 
@@ -64,7 +65,7 @@ class SnakeSimulation:
 
     def See(self):
         x, y = self.pozition[-1]
-        v = []#[x, y] # position of head
+        v = []
         v += [x - self.Food[0], y - self.Food[1]] # position of food
         v += [self.distance(x, y, 1, 0)]
         v += [self.distance(x, y, 0, 1)]
@@ -85,7 +86,7 @@ class SnakeSimulation:
 
         if direction[0] == self.Food[0] and direction[1] == self.Food[1]:
             self.eaten += 1
-            self.Food = self.RandomPoz()
+            #self.Food = self.RandomPoz()
         else:
             self.matrix[self.pozition[0][0]][self.pozition[0][1]] = 0
             self.pozition = self.pozition[1:]
@@ -95,7 +96,7 @@ class SnakeSimulation:
     def __init__(self, snakeai : SnakeAI, time : int):
         self.snakeai = snakeai
         self.DIM = GlobalConstants.DIM
-        self.pozition = [(self.DIM // 2, self.DIM // 2)]
+        self.pozition = [[self.DIM // 2, self.DIM // 2]]
         self.matrix = [[0 for i in range(self.DIM)] for j in range(self.DIM)]
         self.matrix[self.pozition[0][0]][self.pozition[0][1]] = 1
         self.Food = self.RandomPoz()
@@ -110,6 +111,8 @@ class SnakeSimulation:
             dinit = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
             self.NewPoz()
             dfinal = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
-            avg += (dfinal < dinit)
+            avg += int(dfinal < dinit)
         
-        self.Fitness = self.eaten + avg / alive_time
+        self.alive_time = alive_time
+        self.avg = avg
+        self.Fitness = self.alive_time + self.eaten + avg / alive_time

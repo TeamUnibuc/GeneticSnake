@@ -6,7 +6,7 @@ IN_FEATURES     = 6
 OUT_FEATURES    = 4
 
 N               = 100
-SURVIVAL        = 20
+SURVIVAL        = 10
 DIM             = 10
 
 def T(GEN : int):
