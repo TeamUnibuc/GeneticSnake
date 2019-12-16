@@ -15,7 +15,7 @@ class SnakeAI:
         self.layers = [th.randn(lvl1, lvl2), th.randn(lvl2, lvl3)]
 
     def Act(self, v):
-        v = th.tensor(v, dtype=th.float).reshape((1, -1))
+        v = th.tensor(v, dtype=th.float).reshape((1, -1)).cuda()
         
         for i in self.layers:
             v = v.mm(i)
@@ -84,14 +84,15 @@ class SnakeSimulation:
             self.lost = 1
             return
 
+        self.pozition.append(direction)
+        self.matrix[direction[0]][direction[1]] = 1
+
         if direction[0] == self.Food[0] and direction[1] == self.Food[1]:
             self.eaten += 1
             #self.Food = self.RandomPoz()
         else:
             self.matrix[self.pozition[0][0]][self.pozition[0][1]] = 0
             self.pozition = self.pozition[1:]
-        self.pozition.append(direction)
-        self.matrix[direction[0]][direction[1]] = 1
 
     def __init__(self, snakeai : SnakeAI, time : int):
         self.snakeai = snakeai
@@ -108,6 +109,7 @@ class SnakeSimulation:
 
         while alive_time < time and self.lost == 0:
             alive_time += 1
+            f = self.Food
             dinit = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
             self.NewPoz()
             dfinal = abs(self.pozition[-1][0] - self.Food[0]) + abs(self.pozition[-1][1] - self.Food[1])
