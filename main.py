@@ -6,22 +6,23 @@ import numpy as np
 import random
 import PrintSnake
 
+snakes = [Snake.SnakeAI() for i in range(GlobalConstants.N)]
+
 def main():
-    snakes = [Snake.SnakeAI() for i in range(GlobalConstants.N)]
+    global snakes
+    
     GENERATION = 1
 
     last = 0
 
     while True:
         print("New generation ...")
-        time_max = 1000 # GlobalConstants.T(GENERATION)
+        time_max = 1000
         fitness = []
 
         for sn in snakes:
             s = Snake.SnakeSimulation(sn, time_max)
             fit = s.Fitness
-            if random.randint(1, 100) == 1:
-                print("Made ", s.alive_time, " moves, of which ", s.avg, " where towards the food, and ate ", s.eaten, " times")
             
             if s.eaten > last:
                 last = s.eaten
