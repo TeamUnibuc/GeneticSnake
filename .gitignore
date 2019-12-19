@@ -1,3 +1,4 @@
-__pycache__/
+./__pycache__
+SnakeAI/__pycache__
 __pycache__/GlobalConstants.cpython-37.pyc
 __pycache__/Snake.cpython-37.pyc

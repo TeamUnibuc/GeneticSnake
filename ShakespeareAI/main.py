@@ -1,5 +1,5 @@
-import subscripts.GenerateText as GenerateText
-
+import GenerateText
+import Encoder
 def main_script():
     GenerateText.GenerateGext()
 
