@@ -1,5 +1,4 @@
-# ML
-Snake AI
+# Snake AI
 
 An AI based on a genetic evolutionary algorithm, that learns how to play snake on a 10x10 matrix.
 For visualizing the AI, the best snake overall (number of eaten snaks) is captured in an mp4 file called "Fig.mp4"
@@ -7,7 +6,7 @@ For visualizing the AI, the best snake overall (number of eaten snaks) is captur
 ![sample snake](https://github.com/TeamUnibuc/GeneticSnake/blob/master/Samples/sample.png)
 
 # Arhitecture:
-# Input:
+## Input:
     1. Xfood - Xhead
     2. Xhead - Xfood
     3. Yfood - Yhead
@@ -17,26 +16,26 @@ For visualizing the AI, the best snake overall (number of eaten snaks) is captur
     7. distance to wall/tail up
     8. distance to wall/tail left
 
-# Output:
+## Output:
     1. probability of going down
     2. probability of going right
     3. probability of going up
     4. probability of going left
 
-# Decision:
+## Decision:
     Making the snake making one step towards the dominant decision from Output
 
-# Processing:
+## Processing:
     The exact value for the constants is given in the file 'GlobalConstants.py'.
 
     Each generation has N individuals, playing on a DIM x DIM matrix, and having at most T time stamps without eating to make the biggest fitness.
 
     After each generation, the best SURVIVAL snakes evolve in N / SURVIVAL new snakes.
 
-# Fitness:
+## Fitness:
     The fitness of a snake is the number of times it ate.
 
-# Evolution:
+## Evolution:
     Each individual evolves into N / SURVIVAL new individuals.
     The evolution process is the following:
     1. Each snake breakes down into 2 copies: one identical and one with some minor mutations.
