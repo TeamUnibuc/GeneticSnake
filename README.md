@@ -4,7 +4,7 @@ Snake AI
 An AI based on a genetic evolutionary algorithm, that learns how to play snake on a 10x10 matrix.
 For visualizing the AI, the best snake overall (number of eaten snaks) is captured in an mp4 file called "Fig.mp4"
 
-![sample snake](https://github.com/TeamUnibuc/GeneticSnake/Samples/sample.png)
+![sample snake](https://github.com/TeamUnibuc/GeneticSnake/blob/master/Samples/sample.png)
 
 # Arhitecture:
 # Input:
